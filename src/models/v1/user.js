@@ -37,6 +37,14 @@ const userSchema = new mongoose.Schema({
     },
     skills: {
         type: [String],
+    },
+    isDeleted: {
+        type: Boolean,
+        enum: {
+            values: [true, false],
+            message: `isDeleted value must be either true or false`
+        },
+        default: false,
     }
 }, { timestamps: true })
 

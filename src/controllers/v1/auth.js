@@ -1,8 +1,8 @@
-import { validateSignupData } from "../utils/dataValidations.js"
-import User from "../models/user.js"
+import { validateSignupData } from "../../utils/v1/dataValidations.js"
+import User from "../../models/v1/user.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-import { jwtTokenMaxAge } from "../utils/constants.js"
+import { jwtTokenMaxAge } from "../../utils/v1/constants.js"
 
 export const loginController = async (req, res) => {
     try {

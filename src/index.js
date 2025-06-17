@@ -5,7 +5,9 @@ dotenv.config()
 import express from "express";
 import cookieParser from "cookie-parser";
 import connectToDb from "./config/db.js"
-import userRouter from "./routes/auth.js"
+import authRouter from "./routes/v1/auth.js"
+import userRouter from "./routes/v1/user.js"
+import isLoggedIn from "./middlewares/v1/isLoggedIn.js";
 
 
 const app = express()
@@ -16,7 +18,9 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
-app.use("/auth", userRouter)
+app.use("/auth", authRouter)
+app.use("/api", isLoggedIn)
+app.use("/user", userRouter)
 
 connectToDb()
     .then(() => {
