@@ -90,6 +90,19 @@ const jobSchema = new mongoose.Schema({
             values: [true, false],
             message: "isRemote can be a true or false"
         }
+    },
+    contact: {
+        type: String,
+        trim: true,
+        required: true,
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false,
+        enum: {
+            values: [true, false],
+            message: "isDelete can only be true or false"
+        }
     }
 
 }, { timestamps: true })
