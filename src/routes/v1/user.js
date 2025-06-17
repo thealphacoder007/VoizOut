@@ -4,7 +4,7 @@ import { getProfileController } from "../../controllers/v1/user.js"
 
 const router = express.Router()
 
-router.get("/profile", isLoggedIn , getProfileController)
+router.get("/profile", getProfileController)
 
 
 export default router

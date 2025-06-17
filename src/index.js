@@ -19,8 +19,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
 app.use("/auth", authRouter)
-app.use("/api", isLoggedIn)
-app.use("/user", userRouter)
+app.use("/api/v1/user", isLoggedIn, userRouter)
 
 connectToDb()
     .then(() => {
