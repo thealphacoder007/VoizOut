@@ -17,7 +17,7 @@ export const loginController = async (req, res) => {
             throw new Error("Invalid credentials")
         }
 
-        const isPasswordMatched = await bcrypt.compare(password, savedUser.password)
+        const isPasswordMatched = await savedUser.comparePassword(password)
 
         if(!isPasswordMatched) {
             throw new Error("Invalid credentials")
