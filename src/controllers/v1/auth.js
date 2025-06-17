@@ -1,25 +1,26 @@
 import { validateSignupData } from "../../utils/v1/dataValidations.js"
 import User from "../../models/v1/user.js"
+import validator from "validator"
 import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken"
+
 import { jwtTokenMaxAge } from "../../utils/v1/constants.js"
 
 export const loginController = async (req, res) => {
     try {
-        
-        const {emailId, password} = req.body
+
+        const { emailId, password } = req.body
 
         const savedUser = await User.findOne({
             emailId: emailId
         })
 
-        if(!savedUser) {
+        if (!savedUser) {
             throw new Error("Invalid credentials")
         }
 
         const isPasswordMatched = await savedUser.comparePassword(password)
 
-        if(!isPasswordMatched) {
+        if (!isPasswordMatched) {
             throw new Error("Invalid credentials")
         }
 
@@ -78,6 +79,43 @@ export const signUpController = async (req, res) => {
     catch (err) {
         res.status(400).send({
             error: "Something went wrong",
+            message: err.message
+        })
+    }
+}
+
+export const editPasswordController = async (req, res) => {
+    try {
+        const user = req.user
+        const password = req.body.password
+
+        if (!validator.isStrongPassword(password)) {
+            throw new Error("Password must contain a lowercase , uppercase , digit and a special character")
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 11)
+        console.log(hashedPassword);
+
+        const updatedUser = await User.findByIdAndUpdate(user._id, {
+            $set: {
+                password: hashedPassword
+            }
+        })
+
+        if (!updatedUser) {
+            throw new Error("Something went wrong")
+        }
+
+        res.send({
+            status: "success",
+            message: "Password changed successfuly"
+        })
+
+    }
+    catch (err) {
+        console.log(err);
+        res.status(400).send({
+            error: "Something went wrong during updating the password",
             message: err.message
         })
     }

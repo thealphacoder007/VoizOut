@@ -1,4 +1,10 @@
-export const getProfileController = async(req, res) => {
+import User from "../../models/v1/user.js"
+import { editRestrictedFields } from "../../utils/v1/constants.js"
+import { validateEditData } from "../../utils/v1/dataValidations.js"
+import validator from "validator"
+import bcrypt from "bcrypt"
+
+export const getProfileController = async (req, res) => {
     try {
         const user = req.user
 
@@ -6,10 +12,47 @@ export const getProfileController = async(req, res) => {
             user
         })
     }
-    catch(err) {
+    catch (err) {
         res.status(400).send({
             error: "Something went wrong",
             message: err.message
         })
     }
 }
+
+
+export const editProfileController = async (req, res) => {
+    try {
+        const user = req.user
+
+        validateEditData(req)
+
+        let updates = {}
+        for (let key in req.body) {
+            if (!(editRestrictedFields.includes(key))) {
+                updates[key] = req.body[key]
+            }
+        }
+
+        const updatedUser = await User.findOneAndUpdate(
+            {
+                _id: user._id,
+            },
+            { $set: updates },
+            { new: true, runValidators: true }
+        ).select("-password").lean()
+
+        res.json({
+            message: "Profile edited successfully",
+            data: updatedUser
+        })
+
+    }
+    catch (err) {
+        res.status(400).json({
+            success: false,
+            message: err.message
+        })
+    }
+}
+

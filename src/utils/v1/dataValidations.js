@@ -1,5 +1,5 @@
 import validator from "validator"
-import { validRoles } from "./constants.js"
+import { editRestrictedFields, validRoles } from "./constants.js"
 
 const signupDataInvalid = "Invalid signup data"
 
@@ -26,5 +26,16 @@ export const validateSignupData = (req) => {
         throw new Error(`${role} is not a valid role, it must be either applicant or recruiter`)
     }
 
+
+}
+
+export const validateEditData = (req) => {
+    let requestedUpdates = req.body
+
+    for(let key in requestedUpdates) {
+        if(editRestrictedFields.includes(key)) {
+            throw new Error("Cannot edit field " + key)
+        }
+    }
 
 }
