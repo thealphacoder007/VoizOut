@@ -94,7 +94,6 @@ export const editPasswordController = async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 11)
-        console.log(hashedPassword);
 
         const updatedUser = await User.findByIdAndUpdate(user._id, {
             $set: {
@@ -113,7 +112,6 @@ export const editPasswordController = async (req, res) => {
 
     }
     catch (err) {
-        console.log(err);
         res.status(400).send({
             error: "Something went wrong during updating the password",
             message: err.message

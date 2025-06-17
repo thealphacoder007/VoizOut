@@ -8,6 +8,7 @@ import connectToDb from "./config/db.js"
 import authRouter from "./routes/v1/auth.js"
 import userRouter from "./routes/v1/user.js"
 import isLoggedIn from "./middlewares/v1/isLoggedIn.js";
+import jobRouter from "./routes/v1/job.js"
 
 
 const app = express()
@@ -20,6 +21,7 @@ app.use(cookieParser())
 
 app.use("/auth", authRouter)
 app.use("/api/v1/user", isLoggedIn, userRouter)
+app.use("/api/v1/job", isLoggedIn, jobRouter)
 
 connectToDb()
     .then(() => {
