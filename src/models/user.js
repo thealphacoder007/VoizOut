@@ -1,14 +1,15 @@
 import mongoose from "mongoose"
+import jwt from "jsonwebtoken"
 
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, "Name is required"],
         trim: true,
-        minLength: [3,"Name must have atleast 3 characters"]
+        minLength: [3, "Name must have atleast 3 characters"]
     },
     emailId: {
-        type:String,
+        type: String,
         required: [true, "Email id is required"],
         unique: [true, "Email id already in use"]
     },
@@ -19,9 +20,10 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         enum: {
-            values: ["recruiter","applicant","admin"],
+            values: ["recruiter", "applicant", "admin"],
             message: `{VALUE} is not valid role, must be recruiter or applicant`
-        }
+        },
+        required: true
     },
     bio: {
         type: String,
@@ -35,7 +37,17 @@ const userSchema = new mongoose.Schema({
     skills: {
         type: [String],
     }
-}, {timestamps: true})
+}, { timestamps: true })
+
+userSchema.methods.generateJwtToken = function () {
+    const jwtToken = jwt.sign({
+        _id: this._id,
+        role: this.role
+    }, process.env.JWT_SECRETE)
+
+    return jwtToken;
+}
+
 
 const User = mongoose.model("User", userSchema)
 
