@@ -137,6 +137,7 @@ export const filterJobController = async function (req, res) {
     try {
         const query = req.query;
         const searchFilters = {};
+        console.log(query)
 
         // 🔍 Skills - partial match for at least one skill
         if (query.skills) {
@@ -188,13 +189,15 @@ export const filterJobController = async function (req, res) {
             }
         }
 
-        // 👤 Status check
-        if (query.status) {
-            searchFilters.status = query.status;
-        }
+        // // 👤 Status check
+        // if (query.status) {
+        //     searchFilters.status = query.status;
+        // }
 
         // ❌ Exclude deleted jobs
         searchFilters.isDeleted = false;
+
+        console.log("Search filter obj", searchFilters)
 
         // 📤 Final fetch
         const filteredJobs = await Job.find(searchFilters)

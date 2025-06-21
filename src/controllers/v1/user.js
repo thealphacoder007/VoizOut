@@ -56,3 +56,28 @@ export const editProfileController = async (req, res) => {
     }
 }
 
+export const getUserProfileController = async(req,res) => {
+    try {
+        const userId = req.params.userId
+
+        if(!userId) {
+            throw new Error("Invalid user id")
+        }
+
+        const user = await User.findById(userId).select("-password -emailId -role -createdAt -updatedAt").lean()
+
+        if(!user) {
+            throw new Error("No user found")
+        }
+
+        res.send({
+            data: user
+        })
+    }
+    catch(err) {
+        res.status(400).send({
+            status: "fail",
+            message: err.message
+        })
+    }
+}

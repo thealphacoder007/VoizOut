@@ -52,7 +52,7 @@ export const signUpController = async (req, res) => {
 
         const alreadyExists = await User.findOne({
             emailId
-        })
+        }).select("-password -isDeleted").lean()
 
         if (alreadyExists) {
             throw new Error("User with this email id already exists")

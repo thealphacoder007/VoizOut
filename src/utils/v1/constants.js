@@ -6,7 +6,7 @@ export const editRestrictedFields = [
     "password", "emailId"
 ]
 
-export const validJobTypes = ["Internship", "Part Time", "Full Time", "Temporary", "Freelance", "Training"]
+export const validJobTypes = ["Internship", "Job"]
 
 export const industryCategories = [
     "Software Development",

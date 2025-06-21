@@ -16,7 +16,7 @@ export default async function (req, res, next) {
     const decodedString = jwt.decode(token, process.env.JWT_SECRETE)
     const { _id } = decodedString
 
-    const savedUser = await User.findById(_id).select("-password").lean()
+    const savedUser = await User.findById(_id).select("-password -isDeleted").lean()
 
     if (!savedUser) {
         res.status(401).send({
