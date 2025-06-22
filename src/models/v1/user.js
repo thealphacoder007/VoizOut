@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 import jwt from "jsonwebtoken"
+import validatorPkg from "validator"
 import bcrypt from "bcrypt"
 
 const userSchema = new mongoose.Schema({
@@ -45,6 +46,29 @@ const userSchema = new mongoose.Schema({
             message: `isDeleted value must be either true or false`
         },
         default: false,
+    },
+    resumeUrl: {
+        type: String,
+        validate: {
+            validator: function (resumeUrl) {
+                if (!validatorPkg.isURL(resumeUrl)) {
+                    return false
+                }
+            },
+            message: "Please provide valid resume URL"
+        }
+    },
+    contactNumber: {
+        type: String,
+        validate: {
+            validator: function (contact) {
+                return contact.length >= 10 && contact.length <= 12
+            },
+            message: "Please provide valid mobile number"
+        }
+    },
+    experience: {
+        type: [Object]
     }
 }, { timestamps: true })
 
@@ -57,7 +81,7 @@ userSchema.methods.generateJwtToken = function () {
     return jwtToken;
 }
 
-userSchema.methods.comparePassword = async function(newPassword) {
+userSchema.methods.comparePassword = async function (newPassword) {
     const hashedPassword = this.password
 
     const isPasswordMatch = await bcrypt.compare(newPassword, hashedPassword)
