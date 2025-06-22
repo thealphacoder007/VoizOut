@@ -19,7 +19,7 @@ export default async function (req, res, next) {
     const savedUser = await User.findById(_id).select("-password -isDeleted").lean()
 
     if (!savedUser) {
-        res.status(401).send({
+        return res.status(401).send({
             error: "Unauthorized",
             message: "Pls login!"
         })
