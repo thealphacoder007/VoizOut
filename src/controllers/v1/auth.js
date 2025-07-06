@@ -30,7 +30,7 @@ export const loginController = async (req, res) => {
             maxAge: jwtTokenMaxAge,
             secure: true,
             httpOnly: true,
-            sameSite: "Strict"
+            sameSite: "None"
         })
 
         res.send({
@@ -73,7 +73,7 @@ export const signUpController = async (req, res) => {
         res.cookie("token", jwtToken, {
             maxAge: jwtTokenMaxAge,
             secure:true,
-            sameSite:"Strict",
+            sameSite:"None",
             httpOnly: true
         })
 
