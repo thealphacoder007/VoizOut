@@ -27,7 +27,10 @@ export const loginController = async (req, res) => {
         const jwtToken = savedUser.generateJwtToken()
 
         res.cookie("token", jwtToken, {
-            maxAge: jwtTokenMaxAge
+            maxAge: jwtTokenMaxAge,
+            secure: true,
+            httpOnly: true,
+            sameSite: "Strict"
         })
 
         res.send({
@@ -68,7 +71,10 @@ export const signUpController = async (req, res) => {
         const jwtToken = savedUser.generateJwtToken()
 
         res.cookie("token", jwtToken, {
-            maxAge: jwtTokenMaxAge
+            maxAge: jwtTokenMaxAge,
+            secure:true,
+            sameSite:"Strict",
+            httpOnly: true
         })
 
         res.send({
