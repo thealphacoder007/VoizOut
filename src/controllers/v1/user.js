@@ -28,13 +28,16 @@ export const editProfileController = async (req, res) => {
         validateEditData(req)
 
         let updates = {}
-        console.log("body : ", req.body)
         for (let key in req.body) {
             if (!(editRestrictedFields.includes(key))) {
                 updates[key] = req.body[key]
             }
         }
-        console.log(updates)
+
+        if(updates.skills) {
+            updates.skills = updates.skills.split(",")
+        }
+
 
         const updatedUser = await User.findOneAndUpdate(
             {
