@@ -16,7 +16,7 @@ const app = express()
 const port = process.env.PORT || 3000
 
 app.use(cors({
-    origin: "https://voizout-ui.onrender.com",
+    origin: "https://voizout-ui.onrender.com/",
     credentials: true
 }))
 
@@ -27,6 +27,8 @@ app.use(cookieParser())
 app.use("/auth", authRouter)
 app.use("/api/v1/user", userRouter)
 app.use("/api/v1/opportunities", jobRouter)
+
+
 
 connectToDb()
     .then(() => {

@@ -10,10 +10,18 @@ export default async function (req, res, next) {
             message: "Pls login!"
         })
     }
-
+    
     const { token } = cookies
-
+    
     const decodedString = jwt.decode(token, process.env.JWT_SECRETE)
+    
+    if(decodedString == null || decodedString == undefined) {
+        return res.status(401).send({
+            error: "Unauthorized",
+            message: "Pls login!"
+        })
+    }
+
     const { _id } = decodedString
 
     const savedUser = await User.findById(_id).select("-password -isDeleted").lean()

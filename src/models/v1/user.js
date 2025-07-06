@@ -30,11 +30,13 @@ const userSchema = new mongoose.Schema({
     bio: {
         type: String,
         default: "",
+        maxLength: 250,
         trim: true,
     },
     location: {
         type: String,
         trim: true,
+        maxLength: 300
     },
     skills: {
         type: [String],
@@ -56,19 +58,20 @@ const userSchema = new mongoose.Schema({
                 }
             },
             message: "Please provide valid resume URL"
-        }
+        },
+        trim: true
     },
     contactNumber: {
         type: String,
-        validate: {
-            validator: function (contact) {
-                return contact.length >= 10 && contact.length <= 12
-            },
-            message: "Please provide valid mobile number"
-        }
+        trim: true,
     },
     experience: {
         type: [Object]
+    },
+    photoUrl: {
+        type: String,
+        default: "",
+        trim: true,
     }
 }, { timestamps: true })
 

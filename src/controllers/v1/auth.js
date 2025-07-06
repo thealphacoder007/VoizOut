@@ -118,3 +118,19 @@ export const editPasswordController = async (req, res) => {
         })
     }
 }
+
+export const logoutController = async(req,res) => {
+    try {
+        res.cookie("token", null)
+
+        res.send({
+            message: "Logout successful",
+        })
+    }
+    catch(err) {
+        res.send({
+            error: "Something went wrong",
+            message: err.message
+        })
+    }
+}
