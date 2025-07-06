@@ -16,8 +16,7 @@ const app = express()
 const port = process.env.PORT || 3000
 
 app.use(cors({
-    // origin: "https://voizout-ui.onrender.com",
-    origin: "http://localhost:5173",
+    origin: "https://voizout-ui.onrender.com",
     credentials: true
 }))
 
