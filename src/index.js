@@ -25,6 +25,11 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
+app.get("/health", (req,res) => {
+    res.send({
+        message: "App is up"
+    })
+})
 app.use("/auth", authRouter)
 app.use("/api/v1/user", userRouter)
 app.use("/api/v1/opportunities", jobRouter)
