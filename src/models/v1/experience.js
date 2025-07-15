@@ -1,33 +1,48 @@
-import mongoose from "mongoose";
+import mongoose from "mongoose"
+import commentSchema from "./comment.js"
+
 
 const experienceSchema = new mongoose.Schema({
+    author: {
+        type: mongoose.SchemaTypes.ObjectId ,
+        ref: "User"
+    },
+    title: {
+        type: String,
+        trim: true,
+        maxLength: [120, "Title should not exceed than 120"],
+        required: [true, "Title is required for sharing experience"],
+    },
+    description: {
+        type: String,
+        trim: true,
+        maxLength: [9000, "Description should not exceed than 9000 characters"],
+        required: [true, "Please share your experience in detail"],
+    },
     companyName: {
-        type: String,
+        type:String,
         trim: true,
+        lowercase: true,
+        required: true,
     },
-    position: {
+    likes: {
+        type: [mongoose.Types.ObjectId],
+        ref: 'User'
+    },
+    type: {
         type: String,
-        trim: true,
-        minLength: [3,"Position field should have minimum 3 characters"]
-    },
-    from: {
-        month: {
-            trim: true,
-            type: String,
-        },
-        year: {
-            type: Number,
-            max: (new Date(Date.now())).getFullYear()
-        },
-    },
-    to: {
-        month: {
-            type: String,
-            trim: true,
-        },
-        year: {
-            type: Number,
-            max: (new Date(Date.now())).getFullYear()
+        enum: {
+            values: ["interview","process","scam", "feedback"],
+            message: "{VALUE} is not a valid experience type"
         }
-    }
-})
+    },
+    isAnonymous : {
+        type: Boolean,
+        default: false,
+    },
+}, {timestamps: true})
+
+
+const Experience = mongoose.model("Experience", experienceSchema)
+
+export default Experience

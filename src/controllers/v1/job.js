@@ -197,7 +197,6 @@ export const filterJobController = async function (req, res) {
         searchFilters.isDeleted = false;
 
 
-        // 📤 Final fetch
         const filteredJobs = await Job.find(searchFilters)
             .populate("recruiter", "-password -bio -emailId -skills -isDeleted -__v")
             .select("-description -isDeleted");

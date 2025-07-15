@@ -2,6 +2,7 @@ import mongoose from "mongoose"
 import jwt from "jsonwebtoken"
 import validatorPkg from "validator"
 import bcrypt from "bcrypt"
+import userExperienceSchema from "./userExperience.js"
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -61,12 +62,13 @@ const userSchema = new mongoose.Schema({
         },
         trim: true
     },
-    contactNumber: {
+    contact: {
         type: String,
         trim: true,
     },
     experience: {
-        type: [Object]
+        type: [userExperienceSchema],
+        default: []
     },
     photoUrl: {
         type: String,
