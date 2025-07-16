@@ -8,6 +8,9 @@ export const editRestrictedFields = [
 
 export const validJobTypes = ["Internship", "Job"]
 
+export const hideFieldsInAnonymousExperience = "-password -skills -isDeleted -experience -createdAt -updatedAt"
+
+
 export const industryCategories = [
     "Software Development",
     "Information Technology",

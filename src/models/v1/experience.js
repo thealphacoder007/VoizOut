@@ -32,7 +32,7 @@ const experienceSchema = new mongoose.Schema({
     type: {
         type: String,
         enum: {
-            values: ["interview","process","scam", "feedback"],
+            values: ["interview","company","scam", "college"],
             message: "{VALUE} is not a valid experience type"
         }
     },

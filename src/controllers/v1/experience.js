@@ -1,4 +1,5 @@
 import Experience from "../../models/v1/experience.js"
+import { hideFieldsInAnonymousExperience } from "../../utils/v1/constants.js"
 import { sendExperienceData, validatePostExperienceData } from "../../utils/v1/experienceValidator.js"
 
 
@@ -44,7 +45,7 @@ export const getExperience = async (req, res) => {
         }
         
         if(!experience.isAnonymous) {
-            await experience.populate("author","-password -skills -isDeleted -experience -createdAt -updatedAt")
+            await experience.populate("author",hideFieldsInAnonymousExperience)
         }
         
         const toSendExperienceData = sendExperienceData(experience)
@@ -67,7 +68,21 @@ export const getAllExperiences = async(req,res) => {
     try {
         const limit = 10;
         const page = req.query.page || 0
-        const experiences = await Experience.find().skip(10)
+        const experiences = await Experience.find().select("-description").skip(page*limit).limit(limit)
+
+        await Promise.all(
+            experiences.map(async(exp) => {
+                if(!exp.isAnonymous) {
+                    await exp.populate("author", hideFieldsInAnonymousExperience)
+                }
+                return sendExperienceData(exp);
+            })
+        )
+
+        res.send({
+            data: experiences
+        })
+
     }
     catch(err) {
         console.log(err)
