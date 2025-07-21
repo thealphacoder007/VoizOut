@@ -68,7 +68,7 @@ export const getAllExperiences = async(req,res) => {
     try {
         const limit = 10;
         const page = req.query.page || 0
-        const experiences = await Experience.find().select("-description").skip(page*limit).limit(limit)
+        const experiences = await Experience.find().sort({createdAt: -1}).select("-description").skip(page*limit).limit(limit)
 
         await Promise.all(
             experiences.map(async(exp) => {
